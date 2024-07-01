@@ -4,9 +4,9 @@ const server = {
 
 const database = {
     host: 'db',
-    user: process.env.MYSQL_USER,
-    password: process.env.MYSQL_PASSWORD,
-    database: process.env.MYSQL_DATABASE
+    user: "root",
+    password: "root",
+    database: "nodedb"
 }
 
 module.exports = {server, database};
