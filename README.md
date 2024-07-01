@@ -29,7 +29,20 @@ Para compilar a aplicação e gerar a imagem, execute o comando abaixo:
 docker compose up -d --build
 ```
 
+Para acessar a aplicação, acesse o endereço http://localhost:8080
+
+Segue abaixo uma imagem da aplicação em execução:
+
+![](Image/Testing.png)
+
+
 Imagens Docker utilizadas:
+
+[NodeJs]
 https://hub.docker.com/_/node
+
+[Nginx]
 https://hub.docker.com/_/nginx
+
+[Mysql]
 https://hub.docker.com/_/mysql
