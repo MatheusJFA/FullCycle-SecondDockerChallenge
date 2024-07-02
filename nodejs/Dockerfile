@@ -1,5 +1,11 @@
-FROM node:20.15.0
+FROM node
 
 WORKDIR /usr/src/app
 
+COPY . .
+
+RUN npm install
+
 EXPOSE 3000
+
+CMD [ "npm", "start" ]
