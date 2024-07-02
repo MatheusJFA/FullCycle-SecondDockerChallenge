@@ -33,7 +33,7 @@ Para acessar a aplicação, acesse o endereço http://localhost:8080
 
 Segue abaixo uma imagem da aplicação em execução:
 
-![](Image/Testing.png)
+![](Image/Test.png)
 
 
 Imagens Docker utilizadas:
