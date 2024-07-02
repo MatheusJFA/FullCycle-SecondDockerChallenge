@@ -9,7 +9,7 @@ services:
     ports:
       - "3000:3000"
     working_dir: /usr/src/app
-    command: npm start
+    command: npm install && npm start
     volumes: 
       - ./nodejs:/usr/src/app
     depends_on:
@@ -21,6 +21,7 @@ services:
       context: ./database
       dockerfile: Dockerfile
     container_name: db
+    restart: on-failure
     networks:
       - app_network
     ports:
