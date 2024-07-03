@@ -1,47 +1,10 @@
 services: 
-  app:
-    build:
-      context: ./nodejs
-      dockerfile: Dockerfile
-    container_name: app
-    networks:
-      - app_network
-    ports:
-      - "3000:3000"
-    working_dir: /usr/src/app
-    volumes: 
-      - /usr/src/app/node_modules
-      - ./nodejs:/usr/src/app
-    depends_on:
-      db:
-        condition: service_healthy
-
-  db:
-    build:
-      context: ./database
-      dockerfile: Dockerfile
-    container_name: db
-    restart: on-failure
-    networks:
-      - app_network
-    ports:
-      - "3306:3306"
-    volumes:
-      - ./database/migrations:/var/lib/mysql
-    environment:
-      MYSQL_DATABASE: nodedb
-      MYSQL_ROOT_PASSWORD: root
-    healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p$$MYSQL_ROOT_PASSWORD"]
-      interval: 5s
-      timeout: 10s
-      retries: 3
-
   nginx:
     build:
       context: ./nginx
       dockerfile: Dockerfile
     container_name: nginx
+    tty: true
     networks:
       - app_network
     ports:
@@ -50,6 +13,34 @@ services:
       - ./nginx:/etc/nginx/conf.d
     depends_on:
       - app
+      
+  app:
+    build:
+      context: ./nodejs
+      dockerfile: Dockerfile
+    container_name: app
+    tty: true
+    networks:
+      - app_network
+    entrypoint: dockerize -wait tcp://db:3306 -timeout 20s sh -c "npm install && npm run start"
+    volumes: 
+      - ./nodejs:/usr/src/app
+    depends_on:
+      - db
+
+  db:
+    image: mysql:5.7
+    command: --innodb-use-native-aio=0
+    container_name: db
+    tty: true
+    restart: always
+    volumes:
+      - ./database:/docker-entrypoint-initdb.d
+    environment:
+      MYSQL_DATABASE: nodedb
+      MYSQL_ROOT_PASSWORD: root
+    networks:
+      - app_network
 
 networks:
   app_network:

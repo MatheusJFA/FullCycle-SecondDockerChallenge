@@ -16,7 +16,6 @@ application.get('/', async (request, response) => {
     const sql = `SELECT name FROM users`;
 
     const users = await queryFactory(sql);
-    console.log({users})
 
     const html = `
         <h1>Full Cycle Rocks!</h1>
